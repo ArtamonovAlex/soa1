@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="car" type="car"/>
+
+  <xs:element name="coordinates" type="coordinates"/>
+
+  <xs:element name="humanBeing" type="humanBeing"/>
+
+  <xs:complexType name="humanBeing">
+    <xs:all>
+        <xs:element name="name" type="xs:string"/>
+        <xs:element ref="coordinates"/>
+        <xs:element name="realHero" type="xs:boolean"/>
+        <xs:element name="hasToothpick" type="xs:boolean"/>
+        <xs:element name="impactSpeed">
+          <xs:simpleType>
+            <xs:restriction base="xs:float">
+              <xs:minInclusive value="0"/>
+              <xs:maxInclusive value="781"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="minutesOfWaiting" type="xs:long"/>
+        <xs:element name="weaponType" type="weaponType" minOccurs="0"/>
+        <xs:element name="mood" type="mood" minOccurs="0"/>
+        <xs:element ref="car" minOccurs="0"/>
+    </xs:all>
+  </xs:complexType>
+
+  <xs:complexType name="coordinates">
+    <xs:sequence>
+      <xs:element name="x" type="xs:long"/>
+      <xs:element name="y">
+        <xs:simpleType>
+          <xs:restriction base="xs:float">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="421"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="car">
+    <xs:sequence>
+      <xs:element name="cool" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="weaponType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="HAMMER"/>
+      <xs:enumeration value="AXE"/>
+      <xs:enumeration value="PISTOL"/>
+      <xs:enumeration value="MACHINE_GUN"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="mood">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SADNESS"/>
+      <xs:enumeration value="GLOOM"/>
+      <xs:enumeration value="CALM"/>
+      <xs:enumeration value="RAGE"/>
+      <xs:enumeration value="FRENZY"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
