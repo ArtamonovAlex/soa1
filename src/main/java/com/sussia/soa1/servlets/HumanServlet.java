@@ -3,11 +3,9 @@ package com.sussia.soa1.servlets;
 import com.sussia.soa1.SpringUtils;
 import com.sussia.soa1.model.*;
 import com.sussia.soa1.services.HumanBeingService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.xml.sax.SAXParseException;
-
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.servlet.ServletException;
@@ -19,6 +17,7 @@ import javax.xml.bind.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -199,13 +198,12 @@ public class HumanServlet extends HttpServlet {
     }
 
     private Specification<HumanBeing> prepareFilter(String filterQuery) {
-        System.out.println("adfsgdhfjgkhlgf");
         List<Specification<HumanBeing>> filters = new ArrayList<Specification<HumanBeing>>();
         Specification<HumanBeing> globalFilter = null;
         String[] pairs = filterQuery.split(",");
         for(String pair : pairs){
             Specification<HumanBeing> filter = null;
-            String[] kv = pair.split(":");
+            String[] kv = pair.split(":", 2);
             if (kv.length != 2) {
                 return null;
             }
@@ -220,8 +218,11 @@ public class HumanServlet extends HttpServlet {
                     filter = humanAttributeEquals("name", kv[1]);
                     break;
                 case "creationDate":
-                    filter = humanAttributeEquals("creationDate", kv[0]);
-                    break;
+                    ZonedDateTime time = tryParseTime(kv[1]);
+                    if (time != null) {
+                        filter = humanAttributeEquals("creationDate", time);
+                        break;
+                    } else {return null;}
                 case "realHero":
                     Boolean realHero = tryParseBool(kv[1]);
                     if (realHero != null) {
@@ -335,6 +336,15 @@ public class HumanServlet extends HttpServlet {
         };
     }
 
+    private Specification<HumanBeing> humanAttributeEquals(String attribute, ZonedDateTime value) {
+        return (root, query, cb) -> {
+            if(value == null) {
+                return null;
+            }
+            return cb.equal(root.get(attribute), value);
+        };
+    }
+
     private Specification<HumanBeing> coordinatesAttributeEquals(String attribute, Long value) {
         return (root, query, cb) -> {
             if(value == null) {
@@ -421,6 +431,14 @@ public class HumanServlet extends HttpServlet {
                 return false;
             default:
                 return null;
+        }
+    }
+
+    private ZonedDateTime tryParseTime(String strTime) {
+        try {
+            return ZonedDateTime.parse(strTime);
+        } catch (Exception e) {
+            return null;
         }
     }
 }

@@ -2,9 +2,6 @@ package com.sussia.soa1.servlets;
 
 import com.sussia.soa1.SpringUtils;
 import com.sussia.soa1.repositories.HumanBeingRepository;
-import com.sussia.soa1.services.HumanBeingService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
