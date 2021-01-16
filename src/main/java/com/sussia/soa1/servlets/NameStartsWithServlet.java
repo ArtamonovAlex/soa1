@@ -1,5 +1,6 @@
 package com.sussia.soa1.servlets;
 
+import com.sussia.soa1.SpringUtils;
 import com.sussia.soa1.repositories.HumanBeingRepository;
 import com.sussia.soa1.services.HumanBeingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import java.net.URLDecoder;
 
 @WebServlet("/human-beings/name/starts_with/*")
 public class NameStartsWithServlet extends HttpServlet {
-    @Autowired
-    public HumanBeingService service;
+
+    private HumanBeingService service = SpringUtils.ctx.getBean(HumanBeingService.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

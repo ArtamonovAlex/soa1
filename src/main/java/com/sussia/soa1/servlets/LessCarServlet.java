@@ -1,6 +1,7 @@
 package com.sussia.soa1.servlets;
 
 
+import com.sussia.soa1.SpringUtils;
 import com.sussia.soa1.repositories.HumanBeingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -15,8 +16,7 @@ import java.net.URLDecoder;
 @WebServlet("/human-beings/count/car/cool/less/*")
 public class LessCarServlet extends HttpServlet {
 
-    @Autowired
-    public HumanBeingRepository repository;
+    public HumanBeingRepository repository = SpringUtils.ctx.getBean(HumanBeingRepository.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
