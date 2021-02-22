@@ -22,6 +22,10 @@ public class LessCarServlet extends HttpServlet {
         Boolean cool;
         try {
             coolStr = URLDecoder.decode(req.getRequestURL().toString().split("less/")[1], "UTF-8");
+            if (coolStr.split("/").length > 1) {
+                resp.setStatus(404);
+                return;
+            }
             switch (coolStr) {
                 case "true":
                     cool = true;
@@ -33,7 +37,8 @@ public class LessCarServlet extends HttpServlet {
                     resp.getWriter().println(0);
                     return;
                 default:
-                    throw new Exception("");
+                    resp.setStatus(400);
+                    return;
             }
             long count = repository.countAllByCar_CoolLessThan(cool);
             long nullCount = repository.countAllByCar_Cool(null);

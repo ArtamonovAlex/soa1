@@ -4,6 +4,7 @@ import com.sussia.soa1.SpringUtils;
 import com.sussia.soa1.services.HumanBeingService;
 import org.xml.sax.SAXParseException;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +26,7 @@ public class HumanServletSingle extends HttpServlet {
         Long nullableId = parseId(req.getRequestURL().toString());
         long id;
         if (nullableId == null) {
-            resp.setStatus(400);
+            resp.setStatus(404);
             return;
         }
         id = nullableId;
@@ -37,6 +38,7 @@ public class HumanServletSingle extends HttpServlet {
             }
             resp.setContentType("application/xml");
             resp.getWriter().println(being);
+            resp.setStatus(200);
         } catch (Exception e) {
             e.printStackTrace();
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -48,7 +50,7 @@ public class HumanServletSingle extends HttpServlet {
         Long nullableId = parseId(req.getRequestURL().toString());
         long id;
         if (nullableId == null) {
-            resp.setStatus(400);
+            resp.setStatus(404);
             return;
         }
         id = nullableId;
@@ -74,7 +76,7 @@ public class HumanServletSingle extends HttpServlet {
         Long nullableId = parseId(req.getRequestURL().toString());
         long id;
         if (nullableId == null) {
-            resp.setStatus(400);
+            resp.setStatus(404);
             return;
         }
         id = nullableId;
@@ -107,6 +109,16 @@ public class HumanServletSingle extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long nullableId = parseId(req.getRequestURL().toString());
+        if (nullableId == null) {
+            resp.setStatus(404);
+        } else {
+            resp.setStatus(405);
+        }
     }
 
     private Long parseId(String query) {

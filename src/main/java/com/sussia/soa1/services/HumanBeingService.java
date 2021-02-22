@@ -40,7 +40,7 @@ public class HumanBeingService {
 
     public String getAllByName(String name) throws JAXBException {
         List<HumanBeing> beingsList = (List<HumanBeing>) humanBeingRepository.findAllByNameStartsWith(name);
-        HumanBeingResponse resp = new HumanBeingResponse(new HumanBeings(beingsList), new Meta(0,0));
+        HumanBeingResponse resp = new HumanBeingResponse(new HumanBeings(beingsList), new Meta(1,20));
         return resp.toXml();
     }
 

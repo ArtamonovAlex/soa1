@@ -21,7 +21,11 @@ public class NameStartsWithServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name;
         try {
-             name = URLDecoder.decode(req.getRequestURL().toString().split("starts_with/")[1], "UTF-8");
+            name = URLDecoder.decode(req.getRequestURL().toString().split("starts_with/")[1], "UTF-8");
+            if (name.split("/").length > 1) {
+                resp.setStatus(404);
+                return;
+            }
         } catch (Exception e) {
             resp.setStatus(400);
             return;

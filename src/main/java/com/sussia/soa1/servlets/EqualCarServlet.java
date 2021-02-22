@@ -22,6 +22,10 @@ public class EqualCarServlet extends HttpServlet {
         Boolean cool;
         try {
             coolStr = URLDecoder.decode(req.getRequestURL().toString().split("equals/")[1], "UTF-8");
+            if (coolStr.split("/").length > 1) {
+                resp.setStatus(404);
+                return;
+            }
             switch (coolStr) {
                 case "true":
                     cool = true;
@@ -33,7 +37,8 @@ public class EqualCarServlet extends HttpServlet {
                     cool = null;
                     break;
                 default:
-                    throw new Exception("");
+                    resp.setStatus(400);
+                    return;
             }
         } catch (Exception e) {
             resp.setStatus(400);
